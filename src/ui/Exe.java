@@ -17,6 +17,7 @@ public class Exe {
 
     public static void main(String[] args) {
         Exe exe = new Exe();
+        System.out.println();
         exe.roleMenu();
        
     }
@@ -24,7 +25,7 @@ public class Exe {
     public Exe(){
         input = new Scanner(System.in);
         controller = new Controller();
-
+        controller.loadData();
     }
 
     public void roleMenu(){
@@ -92,7 +93,7 @@ public class Exe {
                     deleteAssignment();
                     break;
                 case 0:
-
+                    saveData();
                     break;
 
                 default:
@@ -128,7 +129,7 @@ public class Exe {
                     break;
 
                 case 0:
-
+                    saveData();
                     break;
 
                 default:
@@ -502,5 +503,9 @@ public class Exe {
         } catch (InvalidAssignmentException a) {
             System.out.println(a.getMessage());
         }
+    }
+
+    public void saveData(){
+        System.out.println(controller.saveData());
     }
 }

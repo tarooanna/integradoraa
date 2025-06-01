@@ -1,5 +1,7 @@
 package model;
 
+import java.io.Serializable;
+
 public enum ArtifactType {
 
     ESPECIFICACION_DE_REQUERIMIENTOS, DIAGRAMA_DE_CLASES, INFOGRAFIA, MODELO_DE_DATOS, PLAN_DE_PRUEBAS, DIAGRAMA_DE_DESPLIEGUE

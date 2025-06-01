@@ -1,12 +1,13 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.UUID;
 
 import exceptions.InvalidResultIndexException;
 
-public class Project implements Identifiable{
+public class Project implements Identifiable, Serializable{
     String name;
     String semester;
     String uniqueId;

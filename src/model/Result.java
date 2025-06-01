@@ -1,11 +1,12 @@
 package model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
 import exceptions.InvalidAssignmentException;
 
-public class Result implements Identifiable{
+public class Result implements Identifiable, Serializable{
 
     private ArrayList<Assignment> assignments;
     private ArrayList<Assignment> deletedAssignments;

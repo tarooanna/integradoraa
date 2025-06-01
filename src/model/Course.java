@@ -1,10 +1,11 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.UUID;
 import exceptions.InvalidProjectException;
 
-public class Course implements Identifiable{
+public class Course implements Identifiable, Serializable{
 
     private String code;
     private String name;
@@ -144,5 +145,13 @@ public class Course implements Identifiable{
             throw new InvalidProjectException("El proyecto con el id único "+projectId+" no existe en el curso "+getProfile());
         }
         return searchProject(projectId).deleteAssignment(resultIndex, AssignmentID);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Course other = (Course) obj;
+        return uniqueID.equals(other.uniqueID);
     }
 }

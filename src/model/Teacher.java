@@ -1,9 +1,10 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class Teacher implements Identifiable{
+public class Teacher implements Identifiable, Serializable{
 
     private String idNumber;
     private IDType idType;
@@ -19,7 +20,7 @@ public class Teacher implements Identifiable{
         this.name = name;
         this.eMail = email;
         this.uniqueID = generateCode();
-
+        this.courses = new ArrayList<Course>();
     }
 
     public String generateCode(){
@@ -48,6 +49,10 @@ public class Teacher implements Identifiable{
 
     public String getUniqueID() {
         return uniqueID;
+    }
+
+    public ArrayList<Course> getCourses(){
+        return this.courses;
     }
 }
     

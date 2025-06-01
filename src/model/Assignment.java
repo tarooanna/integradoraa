@@ -1,8 +1,9 @@
 package model;
 
+import java.io.Serializable;
 import java.util.UUID;
 
-public class Assignment implements Identifiable{
+public class Assignment implements Identifiable, Serializable{
 
     private DevelopmentPhase phase;
     private String code;
@@ -41,6 +42,5 @@ public class Assignment implements Identifiable{
             return false;
         return true;
     }
-    
     
 }

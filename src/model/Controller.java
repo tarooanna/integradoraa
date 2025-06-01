@@ -1,7 +1,14 @@
 package model;
 
 import java.util.ArrayList;
-
+import java.io.EOFException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import exceptions.InvalidCourseException;
@@ -18,6 +25,59 @@ public class Controller {
     public Controller(){
         courses = new ArrayList<Course>();
         teachers = new ArrayList<Teacher>();
+    }
+
+    public Controller(String path){
+
+    }
+
+    public String loadData(){
+        File dataBase = new File("data\\demodata.dat");
+
+        try (ObjectInputStream reader = new ObjectInputStream(new FileInputStream(dataBase))) {
+            boolean flag = true;
+            while (flag) {
+                try {
+                    Teacher teacher = (Teacher) reader.readObject();
+                    teachers.add(teacher);
+                    for (Course course : teacher.getCourses()) {
+                        if (!courses.contains(course)) {
+                            courses.add(course);
+                        }
+                    }
+                } catch (EOFException r) {
+                    flag = false;
+                }
+            }
+            return "Carga exitosa";
+        } catch (FileNotFoundException e) {
+            return "Archivo no encontrado";
+        } catch (ClassNotFoundException | IOException p) {
+            return "Error en la carga: " + p.getMessage();
+        }
+
+    }
+
+    public String saveData(){
+        File dataBase = new File("data\\demodata.dat");
+
+        try {
+            dataBase.createNewFile();
+            ObjectOutputStream writer = new ObjectOutputStream(new FileOutputStream(dataBase));
+
+            for (Teacher teacher : teachers) {
+                writer.writeObject(teacher);
+            }
+
+            writer.flush();
+            writer.close();
+            return "";
+        } catch (FileNotFoundException e) {
+            // TODO: handle exception
+            return "Archivo no encontrado";
+        } catch (IOException e){
+            return "Error al cargar";
+        }
     }
 
     public String registerTeacher(String idNumber, int idType, String name, String email){
@@ -40,7 +100,7 @@ public class Controller {
     }
 
     public boolean isValidEmail(String email){
-        return email.matches("\"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\\\.[a-zA-Z]{2,}$\"");
+        return email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
     }
 
     public Teacher searchTeacher(String id){
@@ -108,7 +168,7 @@ public class Controller {
     public String linkCourseToTeacher(String teacherIdNumber, String courseCode) throws InvalidCourseException, InvalidTeacherException{
         String message = "";
         Course course = searchCourseByUniqueID(courseCode);
-        Teacher teacher = searchTeacher(teacherIdNumber);
+        Teacher teacher = searchTeacherByUniqueID(teacherIdNumber);
         if (course == null) {
             throw new InvalidCourseException("El curso con el código "+courseCode+" no existe");
         }
