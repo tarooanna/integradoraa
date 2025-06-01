@@ -61,7 +61,7 @@ public class Project implements Identifiable, Serializable{
         }
         return "Project [name=" + name + ", semester=" + semester + ", uniqueId=" + uniqueId + ", type=" + type
                 + ", link=" + link + ", description=" + description + ", business=" + Arrays.toString(business)
-                + ", keywords=" + Arrays.toString(keywords) + ", father=" + father.getProfile() + ", results= "+resultsProfile+"]\n";
+                + ", keywords=" + Arrays.toString(keywords) + ", Has father=" + !(father == null) + ", results= "+resultsProfile+"]\n";
     }
     
     public String getProfile(){

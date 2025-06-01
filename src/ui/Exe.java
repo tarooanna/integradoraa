@@ -17,15 +17,29 @@ public class Exe {
 
     public static void main(String[] args) {
         Exe exe = new Exe();
-        System.out.println();
         exe.roleMenu();
-       
     }
 
     public Exe(){
         input = new Scanner(System.in);
         controller = new Controller();
-        controller.loadData();
+        System.out.println("¿Desea cargar su propio archivo?");
+        System.out.println("1. si");
+        System.out.println("2. no");
+        int choice = input.nextInt();
+        input.nextLine();
+        switch (choice) {
+            case 1:
+                System.out.println("Ingrese la ruta de su archivo:");
+                String path = input.nextLine();
+                System.out.println(controller.loadData(path));
+                break;
+        
+            default:
+                System.out.println("Se usará el archivo demo");
+                System.out.println(controller.loadData());
+                break;
+        }
     }
 
     public void roleMenu(){
@@ -431,48 +445,58 @@ public class Exe {
     }
 
     public void modifyProject(){
-        System.out.println("Bienvenido a modificar proyecto. ");
-        System.out.println("Estos son todos los proyectos guardados por curso: ");
-        System.out.println(controller.showAllProjects());
-        System.out.println("Ingrese el código del proyecto que desea ver: ");
-        String id = input.nextLine();
-        System.out.println(controller.showProjectInfoByUniqueId(id));
-        System.out.println("Los atributos que puede cambiar son: ");
-        System.out.println("1. Nombre");
-        System.out.println("2. Semestre");
-        System.out.println("3. Tipo");
-        System.out.println("4. Link al enunciado");
-        System.out.println("5. Descripción");
-        System.out.println("6. Empresas beneficiarias");
-        System.out.println("7. Plabras clave");
-        int attribute = 0;
-        while (attribute <1 || attribute > 7) {
-            System.out.println("Escoja uno de los atributos: ");
-            attribute = input.nextInt();
-            input.nextLine();
-        }
-        switch (attribute) {
-            case 1,2,4,5,6,7:
-                System.out.println("Ingrese el valor nuevo del atributo. Recuerde separar por (,) si el atributo a cambiar es una lista: ");
-                String newData = input.nextLine();
-                System.out.println(controller.modifyCommonAttributeProject(id, attribute, newData));
+        try {
+            System.out.println("Bienvenido a modificar proyecto. ");
+            System.out.println("Estos son todos los proyectos guardados por curso: ");
+            System.out.println(controller.showAllProjects());
+            System.out.println("Ingrese el código del proyecto que desea ver: ");
+            String id = input.nextLine();
+            System.out.println(controller.showProjectInfoByUniqueId(id));
+            System.out.println("Los atributos que puede cambiar son: ");
+            System.out.println("1. Nombre");
+            System.out.println("2. Semestre");
+            System.out.println("3. Tipo");
+            System.out.println("4. Link al enunciado");
+            System.out.println("5. Descripción");
+            System.out.println("6. Empresas beneficiarias");
+            System.out.println("7. Plabras clave");
+            int attribute = 0;
+            while (attribute <1 || attribute > 7) {
+                System.out.println("Escoja uno de los atributos: ");
+                attribute = input.nextInt();
+                input.nextLine();
+            }
+            switch (attribute) {
+                case 1,2,4,5,6,7:
+                    System.out.println("Ingrese el valor nuevo del atributo. Recuerde separar por (,) si el atributo a cambiar es una lista: ");
+                    String newData = input.nextLine();
+                    System.out.println(controller.modifyCommonAttributeProject(id, attribute, newData));
 
-                break;
-        
-            case 3:
-                System.out.println("Los tipos de proyecto son: ");
-                System.out.println("Estos son los tipos de proyecto: ");
-                System.out.println("1. Tarea integradora");
-                System.out.println("2. Proyecto de curso");
-                System.out.println("3. Proyecto final");
-                int type = 0;
-                while (type<1 || type>4) {
-                    System.out.println("Ingrese una opción: ");
-                    type = input.nextInt();
-                }
-                System.out.println(controller.modifyTypeProject(id, type));
-                break;
+                    break;
+            
+                case 3:
+                    System.out.println("Los tipos de proyecto son: ");
+                    System.out.println("Estos son los tipos de proyecto: ");
+                    System.out.println("1. Tarea integradora");
+                    System.out.println("2. Proyecto de curso");
+                    System.out.println("3. Proyecto final");
+                    int type = 0;
+                    while (type<1 || type>4) {
+                        System.out.println("Ingrese una opción: ");
+                        type = input.nextInt();
+                    }
+                    System.out.println(controller.modifyTypeProject(id, type));
+                    break;
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("Tipo de dato inválido. Intente de nuevo");
+            input.nextLine();
+        } catch (InvalidCourseException w) {
+            System.out.println(w.getMessage());
+        } catch (InvalidProjectException p) {
+            System.out.println(p.getMessage());
         }
+        
     }
 
     public void deleteAssignment(){

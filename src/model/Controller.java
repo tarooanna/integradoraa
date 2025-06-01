@@ -58,6 +58,35 @@ public class Controller {
 
     }
 
+    public String loadData(String path){
+        File dataBase = new File(path);
+
+        try (ObjectInputStream reader = new ObjectInputStream(new FileInputStream(dataBase))) {
+            boolean flag = true;
+            while (flag) {
+                try {
+                    Teacher teacher = (Teacher) reader.readObject();
+                    teachers.add(teacher);
+                    for (Course course : teacher.getCourses()) {
+                        if (!courses.contains(course)) {
+                            courses.add(course);
+                        }
+                    }
+                } catch (EOFException r) {
+                    flag = false;
+                }
+            }
+            return "Carga exitosa";
+        } catch (FileNotFoundException e) {
+            loadData();
+            return "Archivo no encontrado. Se usará la demo.";
+        } catch (ClassNotFoundException | IOException p) {
+            loadData();
+            return "Se usará la demo. Hubo un error en la carga: " + p.getMessage();
+        }
+
+    }
+
     public String saveData(){
         File dataBase = new File("data\\demodata.dat");
 
@@ -410,7 +439,7 @@ public class Controller {
         throw new InvalidProjectException("El proyecto con el id "+projectId+" no existe");
     }  
     
-    public String modifyTypeProject(String projectID, int type){
+    public String modifyTypeProject(String projectID, int type) throws InvalidProjectException{
         ProjectType newType = turnProjectType(type);
         for (Course course : courses) {
             if (course.hasProject(projectID)) {
