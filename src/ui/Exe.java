@@ -245,9 +245,9 @@ public class Exe {
                 case 1:
                     System.out.println("Estos son todos los proyectos guardados por curso: ");
                     System.out.println(controller.showAllProjects());
-                    System.out.println("Ingrese el código del proyecto que desea ver: ");
+                    System.out.println("Ingrese el código del proyecto padre: ");
                     String id = input.nextLine();
-                    System.out.println(controller.showProjectInfoByUniqueId(id));
+                    System.out.println(controller.registerProject(courseId, name, semester, link, type, description, business, keywords, id));
                     break;
             
                 case 2:
